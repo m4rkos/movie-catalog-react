@@ -1,14 +1,14 @@
-import axios from 'axios';
-import type { MockMovie, PopularMovie } from '../dto/movie';
+import { defer, of, type Observable } from "rxjs";
+import { map, catchError, retry } from "rxjs/operators";
+import type { MockMovie, PopularMovieResult } from '../dto/movie';
+import { http } from "./http";
+import axios from "axios";
 
-const API_KEY = import.meta.env.TOKEN; // cria uma key gratuita no site da TMDB
-const BASE_URL = 'https://api.themoviedb.org/3';
-
-export const getPopularMovies = async (): Promise<PopularMovie[]> => {
+export const getPopularMovies = async (): Promise<PopularMovieResult[]> => {
   try {
-    const response = await axios.get(`${BASE_URL}/movie/popular`, {
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/movie/popular`, {
       params: {
-        api_key: API_KEY,
+        api_key: import.meta.env.VITE_KEY,
         language: 'pt-BR',
         page: 1,
       },
@@ -20,6 +20,17 @@ export const getPopularMovies = async (): Promise<PopularMovie[]> => {
     return [];
   }
 };
+
+// Observable com paginação e idioma opcionais
+export const getPopularMovies$ = ( page = 1, language = "pt-BR" ): Observable<PopularMovieResult[]> =>
+  defer(() => http.get('/movie/popular', {params: { page, language } })).pipe(
+    map((res) => res.data.results as PopularMovieResult[]),
+    retry({ count: 2, delay: 800 }), // tenta mais 2x
+    catchError((err) => {
+      console.error("Erro ao buscar filmes populares:", err);
+      return of<PopularMovieResult[]>([]); // fallback seguro
+    })
+  );
 
 export const getPopularMoviesMock = async (): Promise<MockMovie[]> => {
   return Promise.resolve([
