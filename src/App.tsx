@@ -1,19 +1,26 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { getPopularMovies, getPopularMovies$, getPopularMoviesMock } from './service/movieService';
-import type { MockMovie, PopularMovie, PopularMovieResult } from './dto/movie';
+import { 
+  //getPopularMovies, 
+  getPopularMovies$, 
+  //getPopularMoviesMock 
+} from './service/movieService';
+import type { 
+  //MockMovie, 
+  //PopularMovie, 
+  PopularMovieResult } from './dto/movie';
 import { Subscription } from "rxjs";
 
 function App() {
-  //const [movies, setMovies] = useState<MockMovie[]>([]);
+  ///const [movies, setMovies] = useState<MockMovie[]>([]);
   const [popularMoviesObservable, setPopularMoviesObservable] = useState<PopularMovieResult[]>();
-  const [popularMoviesPromise, setPopularMoviesPromise] = useState<PopularMovieResult[]>();
+  ///const [popularMoviesPromise, setPopularMoviesPromise] = useState<PopularMovieResult[]>();
 
   useEffect(() => {
     ///getPopularMoviesMock().then(setMovies);
-    getPopularMovies()
-      .then(setPopularMoviesPromise)
-      .finally();
+    // getPopularMovies()
+    //   .then(setPopularMoviesPromise)
+    //   .finally();
     
     const sub: Subscription = getPopularMovies$(1, "pt-BR")
       .subscribe(setPopularMoviesObservable);
