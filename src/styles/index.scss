@@ -1,3 +1,10 @@
+// Variáveis ou estilos customizados aqui (opcional)
+$main-color: #1e90ff;
+
+body {
+  background-color: $main-color;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import './Home.css'
+import './Home.scss'
 import { 
   //getPopularMovies, 
   getPopularMovies$, 
