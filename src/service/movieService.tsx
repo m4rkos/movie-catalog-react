@@ -1,6 +1,6 @@
 import { defer, of, type Observable } from "rxjs";
 import { map, catchError, retry } from "rxjs/operators";
-import type { MockMovie, PopularMovieResult } from '../dto/movie';
+import type { MockMovie, PopularMovie, PopularMovieResult } from '../dto/movie';
 import { http } from "./http";
 import axios from "axios";
 
@@ -23,8 +23,8 @@ export const getPopularMovies = async (): Promise<PopularMovieResult[]> => {
 
 // Observable com paginação e idioma opcionais
 export const getPopularMovies$ = ( page = 1, language = "pt-BR" ): Observable<PopularMovieResult[]> =>
-  defer(() => http.get('/movie/popular', {params: { page, language } })).pipe(
-    map((res) => res.data.results as PopularMovieResult[]),
+  defer(() => http.get<PopularMovie>('/movie/popular', {params: { page, language } })).pipe(
+    map((res) => res.data.results),
     retry({ count: 2, delay: 800 }), // tenta mais 2x
     catchError((err) => {
       console.error("Erro ao buscar filmes populares:", err);

@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
-import './App.css'
+import './Home.css'
 import { 
   //getPopularMovies, 
   getPopularMovies$, 
   //getPopularMoviesMock 
-} from './service/movieService';
+} from '../../../service/movieService';
 import type { 
   //MockMovie, 
   //PopularMovie, 
-  PopularMovieResult } from './dto/movie';
+  PopularMovieResult } from '../../../dto/movie';
 import { Subscription } from "rxjs";
 
-function App() {
+function Home() {
   ///const [movies, setMovies] = useState<MockMovie[]>([]);
   const [popularMoviesObservable, setPopularMoviesObservable] = useState<PopularMovieResult[]>();
   ///const [popularMoviesPromise, setPopularMoviesPromise] = useState<PopularMovieResult[]>();
@@ -87,4 +87,4 @@ function App() {
   )
 }
 
-export default App
+export default Home
